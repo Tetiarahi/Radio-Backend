@@ -101,7 +101,7 @@ class AdminStationController extends Controller
 
         return response()->json([
             'success'  => true,
-            'logo_url' => Storage::url($path),
+            'logo_url' => asset('storage/' . $path),
         ]);
     }
 }

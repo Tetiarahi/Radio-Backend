@@ -56,7 +56,7 @@ class RadioStation extends Model
     public function getLogoUrlAttribute(): ?string
     {
         if ($this->logo_path) {
-            return Storage::url($this->logo_path);
+            return asset('storage/' . $this->logo_path);
         }
         return null;
     }
