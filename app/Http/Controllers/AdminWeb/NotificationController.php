@@ -56,7 +56,7 @@ class NotificationController extends Controller
             'body'            => $validated['body'],
             'image_url'       => $validated['image_url'],
             'target_audience' => $validated['target_audience'],
-            'status'          => $validated['action'] === 'send' ? 'sending' : 'draft',
+            'status'          => 'draft',
             'created_by'      => Auth::id(),
         ]);
 
