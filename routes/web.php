@@ -12,6 +12,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::view('/privacy-policy', 'privacy')->name('privacy');
+
 // ── Admin Authentication Routes ───────────────────────────────────────────
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
