@@ -75,7 +75,14 @@ class AdminStationController extends Controller
     {
         // Delete logo from storage
         if ($station->logo_path) {
-            Storage::delete($station->logo_path);
+            if (str_starts_with($station->logo_path, 'uploads/')) {
+                $oldPath = public_path($station->logo_path);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            } else {
+                Storage::disk('public')->delete($station->logo_path);
+            }
         }
         $station->delete();
 
@@ -93,15 +100,30 @@ class AdminStationController extends Controller
 
         // Delete old logo
         if ($station->logo_path) {
-            Storage::disk('public')->delete($station->logo_path);
+            if (str_starts_with($station->logo_path, 'uploads/')) {
+                $oldPath = public_path($station->logo_path);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            } else {
+                Storage::disk('public')->delete($station->logo_path);
+            }
         }
 
-        $path = $request->file('logo')->store("stations/{$station->id}/logos", 'public');
+        $file = $request->file('logo');
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = public_path('uploads/stations/' . $station->id . '/logos');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+        $file->move($destinationPath, $filename);
+        
+        $path = 'uploads/stations/' . $station->id . '/logos/' . $filename;
         $station->update(['logo_path' => $path]);
 
         return response()->json([
             'success'  => true,
-            'logo_url' => asset('storage/' . $path),
+            'logo_url' => asset($path),
         ]);
     }
 }

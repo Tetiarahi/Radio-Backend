@@ -56,6 +56,18 @@ class RadioStation extends Model
     public function getLogoUrlAttribute(): ?string
     {
         if ($this->logo_path) {
+            // If the path is stored as a direct public upload
+            if (str_starts_with($this->logo_path, 'uploads/')) {
+                return asset($this->logo_path);
+            }
+            
+            // Check if the logo exists in public/uploads/stations/logos/
+            $basename = basename($this->logo_path);
+            if (file_exists(public_path('uploads/stations/logos/' . $basename))) {
+                return asset('uploads/stations/logos/' . $basename);
+            }
+
+            // Fallback to storage url
             return asset('storage/' . $this->logo_path);
         }
         return null;

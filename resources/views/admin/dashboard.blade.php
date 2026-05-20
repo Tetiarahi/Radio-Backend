@@ -69,8 +69,8 @@
                         @forelse ($recentStations as $station)
                             <tr>
                                 <td style="display: flex; align-items: center; gap: 16px;">
-                                    @if ($station->logo_path)
-                                        <img src="{{ Storage::url($station->logo_path) }}" alt="{{ $station->name }}" style="width: 40px; height: 40px; border-radius: 10px; object-fit: cover;">
+                                    @if ($station->logo_url)
+                                        <img src="{{ $station->logo_url }}" alt="{{ $station->name }}" style="width: 40px; height: 40px; border-radius: 10px; object-fit: cover;">
                                     @else
                                         <div style="width: 40px; height: 40px; border-radius: 10px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--brand-primary);">
                                             {{ substr($station->name, 0, 2) }}

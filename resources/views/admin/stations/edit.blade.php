@@ -65,9 +65,9 @@
 
             <div class="form-group">
                 <label class="form-label" for="logo">Station Logo (Image)</label>
-                @if ($station->logo_path)
+                @if ($station->logo_url)
                     <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 16px;">
-                        <img src="{{ Storage::url($station->logo_path) }}" alt="{{ $station->name }}" style="width: 64px; height: 64px; border-radius: 14px; object-fit: cover;">
+                        <img src="{{ $station->logo_url }}" alt="{{ $station->name }}" style="width: 64px; height: 64px; border-radius: 14px; object-fit: cover;">
                         <span style="color: var(--text-secondary); font-size: 13px;">Current Logo</span>
                     </div>
                 @endif
