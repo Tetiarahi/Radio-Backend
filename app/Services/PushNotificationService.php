@@ -4,19 +4,42 @@ namespace App\Services;
 
 use App\Models\DeviceToken;
 use App\Models\PushNotification;
+use Google\Auth\Credentials\ServiceAccountCredentials;
+use Google\Auth\Middleware\AuthTokenMiddleware;
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 
 class PushNotificationService
 {
     private Client $client;
-    private string $expoPushUrl;
+    private string $fcmUrl;
+    private bool $isConfigured = false;
 
     public function __construct()
     {
-        $this->client = new Client(['timeout' => 15]);
-        $this->expoPushUrl = env('EXPO_PUSH_BASE_URL', 'https://exp.host/--/api/v2/push/send');
+        $credentialsPath = base_path(env('FIREBASE_CREDENTIALS', 'firebase_credentials.json'));
+        if (file_exists($credentialsPath)) {
+            $scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+            $credentials = new ServiceAccountCredentials($scopes, $credentialsPath);
+            $middleware = new AuthTokenMiddleware($credentials);
+            $stack = HandlerStack::create();
+            $stack->push($middleware);
+
+            $this->client = new Client([
+                'handler' => $stack,
+                'auth' => 'google_auth',
+                'timeout' => 15
+            ]);
+
+            $projectId = env('FIREBASE_PROJECT_ID', 'your-project-id');
+            $this->fcmUrl = "https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send";
+            $this->isConfigured = true;
+        } else {
+            $this->client = new Client(['timeout' => 15]);
+            Log::warning("Firebase credentials not found at {$credentialsPath}");
+        }
     }
 
     /**
@@ -41,35 +64,32 @@ class PushNotificationService
             return;
         }
 
-        // Expo accepts up to 100 tokens per request — batch them
-        $chunks = array_chunk($tokens, 100);
+        if (!$this->isConfigured) {
+            Log::error("PushNotificationService: Firebase not configured.");
+            $notification->update(['status' => 'failed', 'error_message' => 'Firebase not configured']);
+            return;
+        }
+
         $totalSent = 0;
         $errors = [];
 
-        foreach ($chunks as $chunk) {
-            $messages = array_map(fn (string $token) => $this->buildMessage($token, $notification), $chunk);
+        foreach ($tokens as $token) {
+            $message = $this->buildMessage($token, $notification);
 
             try {
-                $response = $this->client->post($this->expoPushUrl, [
+                $response = $this->client->post($this->fcmUrl, [
                     'headers' => [
                         'Accept'       => 'application/json',
                         'Content-Type' => 'application/json',
                     ],
-                    'json' => $messages,
+                    'json' => ['message' => $message],
                 ]);
 
-                $body = json_decode($response->getBody(), true);
-                $results = $body['data'] ?? [];
-
-                foreach ($results as $result) {
-                    if ($result['status'] === 'ok') {
-                        $totalSent++;
-                    } else {
-                        $errors[] = $result['message'] ?? 'Unknown error';
-                    }
+                if ($response->getStatusCode() === 200) {
+                    $totalSent++;
                 }
             } catch (GuzzleException $e) {
-                Log::error("PushNotificationService: Failed to send batch. {$e->getMessage()}");
+                Log::error("PushNotificationService: Failed to send to token {$token}. {$e->getMessage()}");
                 $errors[] = $e->getMessage();
             }
         }
@@ -87,16 +107,16 @@ class PushNotificationService
     private function buildMessage(string $token, PushNotification $notification): array
     {
         $message = [
-            'to'    => $token,
-            'title' => $notification->title,
-            'body'  => $notification->body,
-            'sound' => 'default',
-            'data'  => $notification->data ?? [],
-            '_contentAvailable' => true,
+            'token' => $token,
+            'notification' => [
+                'title' => $notification->title,
+                'body'  => $notification->body,
+            ],
+            'data' => array_map('strval', $notification->data ?? [])
         ];
 
         if ($notification->image_url) {
-            $message['image'] = $notification->image_url;
+            $message['notification']['image'] = $notification->image_url;
         }
 
         return $message;
