@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Radio Kiribati</title>
+    <title>Privacy Policy - Kiribati Radio Stream</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -175,15 +175,15 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo-placeholder">RK</div>
-            <h1>Radio Kiribati</h1>
+            <div class="logo-placeholder">KRS</div>
+            <h1>Kiribati Radio Stream</h1>
             <div class="last-updated">Last Updated: May 2026</div>
         </header>
 
         <main>
             <section>
                 <h2>Introduction</h2>
-                <p>Welcome to <strong>Radio Kiribati</strong>, a mobile streaming and news application. Your privacy is extremely important to us. This Privacy Policy details how we handle information in connection with your use of our mobile application.</p>
+                <p>Welcome to <strong>Kiribati Radio Stream</strong>, a mobile streaming and news application. Your privacy is extremely important to us. This Privacy Policy details how we handle information in connection with your use of our mobile application.</p>
             </section>
 
             <section>
@@ -194,7 +194,7 @@
 
             <section>
                 <h2>Required App Permissions</h2>
-                <p>To deliver a smooth user experience, the Radio Kiribati app requests the following system permissions:</p>
+                <p>To deliver a smooth user experience, the Kiribati Radio Stream app requests the following system permissions:</p>
                 <ul>
                     <li><strong>Internet Access:</strong> Required to connect to our servers to stream live audio and fetch the latest news articles.</li>
                     <li><strong>Foreground Service:</strong> Required to allow the radio playback to continue playing smoothly in the background when the app is minimized or the screen is turned off.</li>
@@ -203,7 +203,7 @@
 
             <section>
                 <h2>Third-Party Services</h2>
-                <p>Our app connects directly to the official Radio Kiribati backend server to retrieve streaming and article information. We do not use third-party analytics SDKs, advertising networks, or user-tracking platforms inside the application.</p>
+                <p>Our app connects directly to the official Kiribati Radio Stream backend server to retrieve streaming and article information. We do not use third-party analytics SDKs, advertising networks, or user-tracking platforms inside the application.</p>
             </section>
 
             <section>
@@ -219,7 +219,7 @@
         </main>
 
         <footer>
-            &copy; 2026 Radio Kiribati. All Rights Reserved.
+            &copy; 2026 Kiribati Radio Stream. All Rights Reserved.
         </footer>
     </div>
 </body>
