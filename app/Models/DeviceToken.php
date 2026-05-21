@@ -10,7 +10,7 @@ class DeviceToken extends Model
     use HasFactory;
 
     protected $fillable = [
-        'expo_push_token',
+        'fcm_token',
         'platform',
         'app_version',
         'locale',

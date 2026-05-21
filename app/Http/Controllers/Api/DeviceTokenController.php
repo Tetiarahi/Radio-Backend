@@ -17,14 +17,14 @@ class DeviceTokenController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'expo_push_token' => ['required', 'string', 'starts_with:ExponentPushToken['],
-            'platform'        => ['required', Rule::in(['android', 'ios', 'unknown'])],
-            'app_version'     => ['nullable', 'string', 'max:20'],
-            'locale'          => ['nullable', 'string', 'max:10'],
+            'fcm_token'   => ['required', 'string'],
+            'platform'    => ['required', Rule::in(['android', 'ios', 'unknown'])],
+            'app_version' => ['nullable', 'string', 'max:20'],
+            'locale'      => ['nullable', 'string', 'max:10'],
         ]);
 
         $token = DeviceToken::updateOrCreate(
-            ['expo_push_token' => $validated['expo_push_token']],
+            ['fcm_token' => $validated['fcm_token']],
             [
                 'platform'     => $validated['platform'],
                 'app_version'  => $validated['app_version'] ?? null,
@@ -47,7 +47,7 @@ class DeviceTokenController extends Controller
      */
     public function destroy(string $pushToken): JsonResponse
     {
-        DeviceToken::where('expo_push_token', $pushToken)
+        DeviceToken::where('fcm_token', $pushToken)
             ->update(['is_active' => false]);
 
         return response()->json(['success' => true, 'message' => 'Token deactivated.']);

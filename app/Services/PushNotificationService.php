@@ -53,7 +53,7 @@ class PushNotificationService
             $query->byPlatform($notification->target_audience);
         }
 
-        $tokens = $query->pluck('expo_push_token')->toArray();
+        $tokens = $query->pluck('fcm_token')->toArray();
 
         if (empty($tokens)) {
             $notification->update([
