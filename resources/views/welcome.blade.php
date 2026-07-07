@@ -26,7 +26,7 @@
             <nav class="flex items-center gap-3">
                 @if (Route::has('admin.login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="inline-flex items-center px-4 py-1.5 text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] border border-[#19140035] dark:border-[#3E3E3A] hover:border-[#1915014a] dark:hover:border-[#62605b] rounded-lg transition-colors">
+                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-1.5 text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] border border-[#19140035] dark:border-[#3E3E3A] hover:border-[#1915014a] dark:hover:border-[#62605b] rounded-lg transition-colors">
                             Dashboard
                         </a>
                     @else
