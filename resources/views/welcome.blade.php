@@ -7,7 +7,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/css/radio-player.css', 'resources/js/app.js'])
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
         @else
             <style>
                 /*! tailwindcss v4.0.7 | MIT License | https://tailwindcss.com */
@@ -77,7 +77,7 @@
                     <button
                         id="play-btn"
                         type="button"
-                        class="flex items-center justify-center w-12 h-12 rounded-full bg-[#f53003] dark:bg-[#FF4433] text-white hover:bg-[#d42a00] dark:hover:bg-#e03d00 transition-colors shadow-lg"
+                        class="flex items-center justify-center w-12 h-12 rounded-full bg-[#f53003] dark:bg-[#FF4433] text-white hover:bg-[#d42a00] dark:hover:bg-[#e03d00] transition-colors shadow-lg"
                         title="Play / Pause"
                     >
                         <svg id="play-icon" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">

@@ -1,2 +1,2 @@
 import './bootstrap';
-import './radio-player';
+import './radio-player.js';
